@@ -40,6 +40,32 @@ task GenerateHelp -Depends Compile -Action {
     $null = New-ExternalHelp -Path $ProjectDocsPath -OutPutPath $BuildDocsPath -Encoding ([System.Text.Encoding]::UTF8) -Force    
 }
 
+task Analyze -depends GenerateHelp -action {
+    $AnalyzeSplat = @{
+        Path        = $BuildModulePath
+        ExcludeRule = "PSUseDeclaredVarsMoreThanAssignments", "PSUseShouldProcessForStateChangingFunctions"
+        Severity    = "Warning"
+    }
+    $Violations = Invoke-ScriptAnalyzer @AnalyzeSplat
+    if ($Violations)
+    {
+        foreach ($Violation in $Violations)
+        {
+            $ErrorSplat = @{
+                Message           = $Violation.Message
+                Category          = $Violation.RuleName
+                TargetObject      = "{Script:{0}, Line:{1}}" -f $Violation.ScriptName, $Violation.Line
+                RecommendedAction = $Violation.SuggestedCorrections
+            }
+            Write-Error @ErrorSplat -ErrorAction Stop
+        }
+    }
+}
+
+task TestManifest -depends Analyze -action {
+    Test-ModuleManifest -Path $BuildManifestPath -ErrorAction Stop
+}
+
 task Test -Depends GenerateHelp -action {
     Invoke-Pester -Script $PSScriptRoot -EnableExit:$TestExit -PesterOption @{IncludeVSCodeMarker = $true}
 }

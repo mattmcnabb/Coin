@@ -1,16 +1,5 @@
 # test that coinpricehistory timespan cannot be negative
 
-Describe 'PSScriptAnalyzer' {
-    It "passes Invoke-ScriptAnalyzer" {
-        $AnalyzeSplat = @{
-            Path        = $BuildModulePath
-            ExcludeRule = "PSUseDeclaredVarsMoreThanAssignments"
-            Severity    = "Warning"
-        }
-        Invoke-ScriptAnalyzer @AnalyzeSplat | Should be $null
-    }
-}
-
 Describe "Docs" {
     It "help file exists" {
         $BuildDocsPath = Join-Path $BuildModulePath "en-US"
@@ -24,12 +13,6 @@ Describe "Manifest" {
     $Content = Get-Content -Path $BuildManifestPath -Raw
     $SB = [scriptblock]::Create($Content)
     $ManifestHash = & $SB
-
-    It "has a valid manifest" {
-        {
-            $null = Test-ModuleManifest -Path $BuildManifestPath -ErrorAction Stop -WarningAction SilentlyContinue
-        } | Should Not Throw
-    }
 
     It "has a valid nested module" {
         $ManifestHash.NestedModules | Should Be "$ModuleName.psm1"
