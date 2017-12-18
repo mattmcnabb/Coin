@@ -78,14 +78,15 @@ task Clean -depends Test -action {
 
 task Build -depends Test
 
-task PreDeploy -action {
-    if (!$env:APPVEYOR_REPO_TAG)
-    {
-        exit 0
-    }
-} -description "checks to see if the build was pushed by a tag"
-
 Task Deploy {
-    Import-Module PowerShellGet -Force
-    Publish-Module -Path $BuildModulePath -NuGetApiKey ($env:PSGallery_Api_Key) -Confirm:$false -Verbose
-} -description "deploys the built module to the Powershell Gallery"
+    if ($env:APPVEYOR_REPO_TAG)
+    {
+        Import-Module PowerShellGet -Force
+        Publish-Module -Path $BuildModulePath -NuGetApiKey ($env:PSGallery_Api_Key) -Confirm:$false -Verbose
+    }
+    else
+    {
+        Write-Verbose -Message "The build was not pushed via a tag, so module will not be deployed."
+    }
+
+} -description "deploys the built module to the Powershell Gallery if pushed by a tag"
