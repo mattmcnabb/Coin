@@ -1,8 +1,7 @@
 [CmdletBinding()]
 param
 (
-    [ValidateSet("Build","Deploy")]
-    [string]
+    [string[]]
     $Task
 )
 
