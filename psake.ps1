@@ -78,15 +78,8 @@ task Clean -depends Test -action {
 
 task Build -depends Test
 
-Task Deploy {
-    if ($env:APPVEYOR_REPO_COMMIT_MESSAGE -match "^!Deploy")
-    {
+Task Deploy -precondition {$env:APPVEYOR_REPO_TAG} -action {
         Import-Module PowerShellGet -Force
         Publish-Module -Path $BuildModulePath -NuGetApiKey ($env:PSGallery_Api_Key) -Confirm:$false -Verbose
     }
-    else
-    {
-        Write-Verbose -Message "The commit message was not marked for deployment - no action was taken"
-    }
-
-} -description "deploys the built module to the Powershell Gallery if committed with a message starting with '!Deploy'"
+} -description "deploys the built module to the Powershell Gallery if pushed with a tag"
