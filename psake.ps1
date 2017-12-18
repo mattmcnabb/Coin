@@ -81,5 +81,4 @@ task Build -depends Test
 Task Deploy -precondition {$env:APPVEYOR_REPO_TAG} -action {
         Import-Module PowerShellGet -Force
         Publish-Module -Path $BuildModulePath -NuGetApiKey ($env:PSGallery_Api_Key) -Confirm:$false -Verbose
-    }
 } -description "deploys the built module to the Powershell Gallery if pushed with a tag"
