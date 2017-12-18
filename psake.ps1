@@ -25,7 +25,14 @@ properties {
 
 task Default -depends Build
 
-task Compile -Action {
+task Compile -action {
+    Write-Verbose "Build properties:" -Verbose
+    foreach ($Variable in (Get-Variable Project*,Build*))
+    {
+        $Message = "Name:{0} Value:{1}" -f $Variable.Name, $Variable.Value
+        Write-Verbose -Message $Message -Verbose
+    }
+    
     Get-ChildItem -Path $ProjectModulePath -Filter "*.ps?1" | Copy-Item -Destination $BuildModulePath -Recurse -Force
     foreach ($Script in (Get-ChildItem -Path $ProjectHelpersPath, $ProjectFunctionsPath))
     {
@@ -79,6 +86,6 @@ task Clean -depends Test -action {
 task Build -depends Test
 
 Task Deploy -precondition {$env:APPVEYOR_REPO_TAG} -action {
-        Import-Module PowerShellGet -Force
-        Publish-Module -Path $BuildModulePath -NuGetApiKey ($env:PSGallery_Api_Key) -Confirm:$false -Verbose
+    Import-Module PowerShellGet -Force
+    Publish-Module -Path $BuildModulePath -NuGetApiKey ($env:PSGallery_Api_Key) -Confirm:$false -Verbose
 } -description "deploys the built module to the Powershell Gallery if pushed with a tag"
