@@ -37,13 +37,24 @@
     },
     "tasks": [
         {
-            "label": "Build",
+            "label": "Build-Test-Clean",
             "command": "${cwd}/build.ps1 -Task Build, Clean",
             "type": "shell",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "problemMatcher": "$pester"
+        },
+        {
+            "label": "Build-Test",
+            "command": "${cwd}/build.ps1 -Task Build",
+            "type": "shell",
+            "group": "build",
             "presentation": {
                 "reveal": "always",
                 "panel": "new"
