@@ -1,6 +1,7 @@
 function New-ErrorRecord
 {
     [CmdletBinding()]
+    [OutputType([System.Management.Automation.ErrorRecord])]
     param
     (
         [string]
