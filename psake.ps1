@@ -85,7 +85,7 @@ task Clean -depends Test -action {
     Remove-Item -Path $BuildTempPath -Confirm:$false -Recurse
 } -description "cleans up the build directory"
 
-Task Deploy -precondition {[bool]$env:APPVEYOR_REPO_TAG} -action {
+Task Deploy -precondition {$env:APPVEYOR_REPO_TAG -match '^!Deploy'} -action {
     Import-Module PowerShellGet -Force
     Publish-Module -Path $BuildModulePath -NuGetApiKey ($env:PSGallery_Api_Key) -Confirm:$false -Verbose
-} -description "deploys the built module to the Powershell Gallery if pushed with a tag"
+} -description "deploys the built module to the Powershell Gallery if commit message starts with '!Deploy'"
