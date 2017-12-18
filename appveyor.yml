@@ -12,10 +12,7 @@ install:
   - ps: Install-Module -Name Psake, Pester, PSScriptAnalyzer, PlatyPS, PowerShellGet -Confirm:$false -Force -ErrorAction SilentlyContinue | Out-Null
 
 build_script:
-  - ps: . ./build.ps1 -Task Build
-
-deploy_script:
-  - ps: . ./build.ps1 -Task Deploy
+  - ps: . ./build.ps1 -Task Build, Deploy
 
 environment:
   PSGallery_Api_Key:

@@ -25,6 +25,8 @@ properties {
 
 task Default -depends Build
 
+task Build -depends Test
+
 task Compile -action {
     Write-Verbose "Build properties:" -Verbose
     foreach ($Variable in (Get-Variable Project*,Build*))
@@ -82,8 +84,6 @@ task Test -Depends TestManifest -action {
 task Clean -depends Test -action {
     Remove-Item -Path $BuildTempPath -Confirm:$false -Recurse
 } -description "cleans up the build directory"
-
-task Build -depends Test
 
 Task Deploy -precondition {$env:APPVEYOR_REPO_TAG} -action {
     Import-Module PowerShellGet -Force
