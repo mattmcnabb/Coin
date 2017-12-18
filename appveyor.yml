@@ -1,0 +1,31 @@
+version: 0.2.0.{build}
+
+os: WMF 5
+
+skip_commits:
+  message: /update readme.*/
+
+build: off
+
+deploy:
+- provider: Environment
+    name: production
+    on:
+      appveyor_repo_tag: true
+
+install:
+  - ps: Install-PackageProvider -Name NuGet -Confirm:$false -Force -ErrorAction Stop | Out-Null
+  - ps: Install-Module -Name Psake, Pester, PSScriptAnalyzer, PlatyPS -Confirm:$false -Force -ErrorAction SilentlyContinue | Out-Null
+
+test_script:
+  - ps: . ./build/test.ps1 -Environment Appveyor
+
+build_script:
+  - ps: . ./build.ps1 -Task Build
+
+deploy_script:
+  - ps: . ./build.ps1 -Task Deploy
+
+environment:
+  PSGallery_Api_Key:
+secure: 0EePWivW8cgi5NAGuTYlskxb7W07x0xAhIrs5XumYoGibUTOkHhKBvqGhx/mg9h8
