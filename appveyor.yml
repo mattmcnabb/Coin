@@ -18,10 +18,6 @@ install:
 build_script:
   - ps: . ./build.ps1 -Task Build
 
-
-before_deploy:
-  - ps: . ./build.ps1 -Task PreDeploy
-
 deploy_script:
   - ps: . ./build.ps1 -Task Deploy
 
