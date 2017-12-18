@@ -5,6 +5,10 @@ os: WMF 5
 skip_commits:
   message: /update readme.*/
 
+branches:
+  only:
+    - master
+
 build: off
 
 install:
@@ -14,8 +18,12 @@ install:
 build_script:
   - ps: . ./build.ps1 -Task Build
 
+
+before_deploy:
+  - ps: . ./build.ps1 -Task PreDeploy
+
 deploy_script:
-  - ps: if ($env:APPVEYOR_REPO_TAG) {. ./build.ps1 -Task Deploy}
+  - ps: . ./build.ps1 -Task Deploy
 
 environment:
   PSGallery_Api_Key:
