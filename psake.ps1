@@ -29,7 +29,7 @@ task Build -depends Test
 
 task Compile -action {
     Write-Verbose "Build properties:" -Verbose
-    foreach ($Variable in (Get-Variable Project*,Build*))
+    foreach ($Variable in (Get-Variable Project*,Build*,Version))
     {
         $Message = "Name:{0} Value:{1}" -f $Variable.Name, $Variable.Value
         Write-Verbose -Message $Message -Verbose
@@ -43,6 +43,7 @@ task Compile -action {
     }
     $ManifestData = Get-Content $BuildManifestPath
     $ManifestData = $ManifestData -replace "ModuleVersion\s+=\s+`"\d+\.\d+\.\d+\.\d+`"", "ModuleVersion = `"$Version`""
+    Write-Verbose $ManifestData
     $ManifestData | Out-File $BuildManifestPath -Force -Encoding utf8
 } -description "compiles separate function files into a single module"
 
