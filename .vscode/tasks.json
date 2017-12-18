@@ -38,7 +38,7 @@
     "tasks": [
         {
             "label": "Build",
-            "command": "${cwd}/build.ps1 -Task Build",
+            "command": "${cwd}/build.ps1 -Task Build, Clean",
             "type": "shell",
             "group": {
                 "kind": "build",
