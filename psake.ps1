@@ -77,9 +77,6 @@ task Clean -depends Test -action {
 task Build -depends Clean
 
 Task Deploy {
-    if (APPVEYOR_REPO_TAG)
-    {
-        Import-Module PowerShellGet -Force
-        Publish-Module -Path $BuildModulePath -NuGetApiKey ($env:PSGallery_Api_Key) -Confirm:$false -Verbose
-    }
+    Import-Module PowerShellGet -Force
+    Publish-Module -Path $BuildModulePath -NuGetApiKey ($env:PSGallery_Api_Key) -Confirm:$false -Verbose
 }
