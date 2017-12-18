@@ -28,10 +28,11 @@ task Compile -Action {
     foreach ($Script in (Get-ChildItem -Path $ProjectHelpersPath, $ProjectFunctionsPath))
     {
         Get-Content -Path $Script.FullName | Out-File -FilePath $BuildPsm1Path -Append -Encoding utf8
-        $ManifestData = Get-Content $BuildManifestPath
-        $ManifestData = $ManifestData -replace "ModuleVersion = `"\d+\.\d+\.\d+.d+`"", "ModuleVersion = `"$Version`""
-        $ManifestData | Out-File $BuildManifestPath -Force -Encoding utf8
+        
     }
+    $ManifestData = Get-Content $BuildManifestPath
+    $ManifestData = $ManifestData -replace "ModuleVersion = `"\d+\.\d+\.\d+\.d+`"", "ModuleVersion = `"$Version`""
+    $ManifestData | Out-File $BuildManifestPath -Force -Encoding utf8
 }
 
 task GenerateHelp -Depends Compile -Action {
