@@ -43,7 +43,7 @@ task Compile -action {
     }
     $ManifestData = Get-Content $BuildManifestPath
     $ManifestData = $ManifestData -replace "ModuleVersion\s+=\s+`"\d+\.\d+\.\d+\.\d+`"", "ModuleVersion = `"$Version`""
-    Write-Verbose $ManifestData
+    Write-output $ManifestData
     $ManifestData | Out-File $BuildManifestPath -Force -Encoding utf8
 } -description "compiles separate function files into a single module"
 
