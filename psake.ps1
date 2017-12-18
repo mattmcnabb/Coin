@@ -89,4 +89,4 @@ task Clean -depends Test -action {
 Task Deploy -precondition {$env:APPVEYOR_COMMIT_MESSAGE -match '^!Deploy'} -action {
     Import-Module PowerShellGet -Force
     Publish-Module -Path $BuildModulePath -NuGetApiKey ($env:PSGallery_Api_Key) -Confirm:$false -Verbose
-} -description "deploys the built module to the Powershell Gallery if commit message starts with '!Deploy'"
+} -description "deploys the module to the Powershell Gallery if commit message starts with '!Deploy'"
