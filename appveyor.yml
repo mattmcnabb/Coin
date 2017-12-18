@@ -8,17 +8,12 @@ skip_commits:
 build: off
 
 deploy:
-- provider: Environment
-    name: production
-    on:
-      appveyor_repo_tag: true
+  on:
+    appveyor_repo_tag: true
 
 install:
   - ps: Install-PackageProvider -Name NuGet -Confirm:$false -Force -ErrorAction Stop | Out-Null
   - ps: Install-Module -Name Psake, Pester, PSScriptAnalyzer, PlatyPS -Confirm:$false -Force -ErrorAction SilentlyContinue | Out-Null
-
-test_script:
-  - ps: . ./build/test.ps1 -Environment Appveyor
 
 build_script:
   - ps: . ./build.ps1 -Task Build
