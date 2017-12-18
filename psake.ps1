@@ -31,7 +31,7 @@ task Compile -Action {
         
     }
     $ManifestData = Get-Content $BuildManifestPath
-    $ManifestData = $ManifestData -replace "ModuleVersion = `"\d+\.\d+\.\d+\.d+`"", "ModuleVersion = `"$Version`""
+    $ManifestData = $ManifestData -replace "ModuleVersion\s+=\s+`"\d+\.\d+\.\d+\.\d+`"", "ModuleVersion = `"$Version`""
     $ManifestData | Out-File $BuildManifestPath -Force -Encoding utf8
 }
 
