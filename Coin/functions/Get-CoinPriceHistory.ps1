@@ -11,18 +11,60 @@ function Get-CoinPriceHistory
         [string[]]
         $ToSymbols,
 
-        [Parameter(Mandatory)]
+        [Parameter()]
+        [ValidateSet("Day", "Hour", "Minute")]
+        [string]
+        $DataInterval = "Hour",
+
+        [Parameter()]
         [DateTime]
-        $TimeStamp
+        $Since = (Get-Date).AddDays(-1),
+
+        [Parameter()]
+        [DateTime]
+        $Until = (Get-Date)
     )
     
-    $ts = ConvertTo-UnixTime -TimeStamp $TimeStamp
-    
-    $Body = @{
-        tsyms = $ToSymbols -join ','
-        fsym  = $FromSymbol
-        ts = $ts
-    }
+    try
+    {
+        $Timespan = $Until - $Since
+        Test-Timespan -Timespan $Timespan
 
-    Invoke-CoinRestMethod -Api "min-api" -Endpoint "pricehistorical" -Body $Body | Select-Object -ExpandProperty $FromSymbol
+        $Splat = @{
+            Api = "min-api"
+            Body = @{
+                tsym = $ToSymbols -join ','
+                fsym = $FromSymbol
+                toTs = ConvertTo-UnixTime -TimeStamp $Until
+            }
+        }
+    
+        # how to validate that the timespan selected fits within the acceptable range for each endpoint?
+        switch ($DataInterval)
+        {
+            Day
+            {
+                $Splat["Endpoint"] = "histoday"
+                $Splat["Body"]["limit"] = $Timespan.TotalDays
+            }
+    
+            Hour
+            {
+                $Splat["Endpoint"] = "histohour"
+                $Splat["Body"]["limit"] = $Timespan.TotalHours
+            }
+    
+            Minute
+            {
+                $Splat["Endpoint"] = "histominute"
+                $Splat["Body"]["limit"] = $Timespan.TotalMinutes
+            }
+        }
+    
+        Invoke-CoinRestMethod @Splat | Select-Object -ExpandProperty Data
+    }
+    catch
+    {
+        $PSCmdlet.ThrowTerminatingError($_)
+    }
 }

@@ -5,7 +5,7 @@ function Invoke-CoinRestMethod
     (
         [Parameter(Mandatory = $true)]
         [string]
-        [ValidateSet("original","min-api")]
+        [ValidateSet("original", "min-api")]
         $Api,
 
         [string]
@@ -14,16 +14,34 @@ function Invoke-CoinRestMethod
         [hashtable]
         $Body
     )
-    
-    $ApiBase = $CoinApis.$Api
-    $Splat = @{
-        Uri = "{0}/{1}" -f $ApiBase, $Endpoint
-    }
 
-    if ($Body)
+    try
     {
-        $Splat["Body"] = $Body
-    }
+        $ApiBase = $CoinApis.$Api
+        $Splat = @{
+            Uri = "{0}/{1}" -f $ApiBase, $Endpoint
+        }
 
-    Invoke-RestMethod @Splat
+        if ($Body)
+        {
+            $Splat["Body"] = $Body
+        }
+
+        # test that the response type value is greater than 100, if not, throw an error
+
+        $Response = Invoke-RestMethod @Splat
+        if ($Response.Response -eq "Error")
+        {
+
+            throw $Response.Message
+        }
+        else
+        {
+            $Response
+        }
+    }
+    catch
+    {
+        $PSCmdlet.ThrowTerminatingError($_)
+    }
 }
