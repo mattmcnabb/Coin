@@ -23,6 +23,8 @@ properties {
     $BuildDocsPath = Join-Path $BuildModulePath "en-US"
 }
 
+task Default -depends Build
+
 task Compile -Action {
     Get-ChildItem -Path $ProjectModulePath -Filter "*.ps?1" | Copy-Item -Destination $BuildModulePath -Recurse -Force
     foreach ($Script in (Get-ChildItem -Path $ProjectHelpersPath, $ProjectFunctionsPath))
