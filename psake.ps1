@@ -66,7 +66,7 @@ task TestManifest -depends Analyze -action {
     Test-ModuleManifest -Path $BuildManifestPath -ErrorAction Stop
 } -description "tests the validity of the module manifest"
 
-task Test -Depends GenerateHelp -action {
+task Test -Depends TestManifest -action {
     Invoke-Pester -Script $PSScriptRoot -EnableExit:$TestExit -PesterOption @{IncludeVSCodeMarker = $true}
 } -description "runs Pester tests"
 
