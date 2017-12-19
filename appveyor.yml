@@ -9,7 +9,7 @@ build: off
 
 install:
   - ps: Install-PackageProvider -Name NuGet -Confirm:$false -Force -ErrorAction Stop | Out-Null
-  - ps: Install-Module -Name Psake, Pester, PSScriptAnalyzer, PlatyPS, PowerShellGet -Confirm:$false -Force | Out-Null
+  - ps: Install-Module -Name Psake, Pester, PSScriptAnalyzer, PlatyPS, PowerShellGet, PackageManagement -Confirm:$false -Force | Out-Null
 
 build_script:
   - ps: . ./build.ps1 -Task Build, Deploy
