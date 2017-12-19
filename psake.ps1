@@ -87,8 +87,5 @@ task Clean -depends Test -action {
 } -description "cleans up the build directory"
 
 Task Deploy -precondition {$env:APPVEYOR_REPO_COMMIT_MESSAGE -match '^!Deploy'} -action {
-    Trace-Command {
-        Publish-Module -Path $BuildModulePath -NuGetApiKey ($env:PSGallery_Api_Key) -Confirm:$false -Verbose
-    } -name ParameterBinding -PSHost 
-    
+    Publish-Module -Path $BuildModulePath -NuGetApiKey ($env:PSGallery_Api_Key) -Confirm:$false -Verbose
 } -description "deploys the module to the Powershell Gallery if commit message starts with '!Deploy'"
