@@ -7,6 +7,10 @@ skip_commits:
 
 build: off
 
+branches:
+  only:
+    - master
+
 install:
   - ps: Install-PackageProvider -Name NuGet -Confirm:$false -Force -ErrorAction Stop | Out-Null
   - ps: Install-Module -Name Psake, Pester, PSScriptAnalyzer, PlatyPS, PowerShellGet, PackageManagement -Confirm:$false -Force | Out-Null
