@@ -3,8 +3,8 @@ function Get-CoinPrice
     [CmdletBinding()]
     param
     (
-        [string]
-        $FromSymbol,
+        [string[]]
+        $FromSymbols,
 
         [string[]]
         $ToSymbols
@@ -12,8 +12,16 @@ function Get-CoinPrice
 
     $Body = @{
         tsyms = $ToSymbols -join ','
-        fsym  = $FromSymbol
+        fsyms  = $FromSymbols -join ','
     }
 
-    Invoke-CoinRestMethod -Api "min-api" -Endpoint "price" -Body $Body
+    $Raw = Invoke-CoinRestMethod -Api "min-api" -Endpoint "pricemultifull" -Body $Body | Select-Object -ExpandProperty Raw
+
+    foreach ($FromSymbol in $FromSymbols)
+    {
+        foreach ($ToSymbol in $ToSymbols)
+        {
+            $Raw.$FromSymbol.$ToSymbol
+        }
+    }
 }
