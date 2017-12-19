@@ -16,6 +16,9 @@ function Get-CoinPriceHistory
         [string]
         $DataInterval = "Hour",
 
+        [int]
+        $Aggregate = 1,
+
         [Parameter()]
         [DateTime]
         $Since = (Get-Date).AddDays(-1),
@@ -36,6 +39,7 @@ function Get-CoinPriceHistory
                 tsym = $ToSymbol -join ','
                 fsym = $FromSymbol
                 toTs = ConvertTo-UnixTime -TimeStamp $Until
+                aggregate = $Aggregate
             }
         }
     
@@ -46,6 +50,8 @@ function Get-CoinPriceHistory
             {
                 $Splat["Endpoint"] = "histoday"
                 $Splat["Body"]["limit"] = $Timespan.TotalDays
+                # the histoday endpoint's aggregate parameter has a max value of 30
+                $Splat["Body"]["aggregate"] = [System.Math]::Min(30, $Aggregate)
             }
     
             Hour
@@ -60,7 +66,7 @@ function Get-CoinPriceHistory
                 $Splat["Body"]["limit"] = $Timespan.TotalMinutes
             }
         }
-    
+
         Invoke-CoinRestMethod @Splat |
             Select-Object -ExpandProperty Data |
             Select-Object -Property @{n="Time"; e={ConvertFrom-UnixTime $_.Time}},* -ExcludeProperty Time
