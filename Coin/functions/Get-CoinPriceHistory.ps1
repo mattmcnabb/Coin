@@ -61,7 +61,9 @@ function Get-CoinPriceHistory
             }
         }
     
-        Invoke-CoinRestMethod @Splat | Select-Object -ExpandProperty Data
+        Invoke-CoinRestMethod @Splat |
+            Select-Object -ExpandProperty Data |
+            Select-Object -Property @{n="Time"; e={ConvertFrom-UnixTime $_.Time}},* -ExcludeProperty Time
     }
     catch
     {
