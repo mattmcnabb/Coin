@@ -13,10 +13,10 @@ function Get-Coin
 
     if ($PSBoundParameters.ContainsKey("All"))
     {
-        $Coins
+        $Coins | Select-Object -Property @{n="SortOrder"; e={[int]$_.SortOrder}},* -ExcludeProperty SortOrder
     }
     else
     {
-        $Coins | Where-Object Id -in $Watched
+        $Coins | Where-Object Id -in $Watched | Select-Object -Property @{n = "SortOrder"; e = {[int]$_.SortOrder}},* -ExcludeProperty SortOrder
     }
 }
