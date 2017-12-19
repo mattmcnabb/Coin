@@ -8,8 +8,8 @@ function Get-CoinPriceHistory
         $FromSymbol,
 
         [Parameter(Mandatory)]
-        [string[]]
-        $ToSymbols,
+        [string]
+        $ToSymbol,
 
         [Parameter()]
         [ValidateSet("Day", "Hour", "Minute")]
@@ -33,7 +33,7 @@ function Get-CoinPriceHistory
         $Splat = @{
             Api = "min-api"
             Body = @{
-                tsym = $ToSymbols -join ','
+                tsym = $ToSymbol -join ','
                 fsym = $FromSymbol
                 toTs = ConvertTo-UnixTime -TimeStamp $Until
             }
