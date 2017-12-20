@@ -19,11 +19,11 @@ function Get-CoinPriceHistory
         [int]
         $Aggregate = 1,
 
-        [Parameter()]
+        [Parameter(Mandatory)]
         [DateTime]
         $Since = (Get-Date).AddDays(-1),
 
-        [Parameter()]
+        [Parameter(Mandatory)]
         [DateTime]
         $Until = (Get-Date)
     )
