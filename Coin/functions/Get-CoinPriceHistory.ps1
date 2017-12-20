@@ -48,22 +48,23 @@ function Get-CoinPriceHistory
         {
             Day
             {
+                $Aggregate = [System.Math]::Min(30, $Aggregate)
                 $Splat["Endpoint"] = "histoday"
-                $Splat["Body"]["limit"] = [int]$Timespan.TotalDays
+                $Splat["Body"]["limit"] = [int]($Timespan.TotalDays / $Aggregate)
                 # the histoday endpoint's aggregate parameter has a max value of 30
-                $Splat["Body"]["aggregate"] = [System.Math]::Min(30, $Aggregate)
+                $Splat["Body"]["aggregate"] = $Aggregate
             }
     
             Hour
             {
                 $Splat["Endpoint"] = "histohour"
-                $Splat["Body"]["limit"] = [int]$Timespan.TotalHours
+                $Splat["Body"]["limit"] = [int]($Timespan.TotalHours / $Aggregate)
             }
     
             Minute
             {
                 $Splat["Endpoint"] = "histominute"
-                $Splat["Body"]["limit"] = [int]$Timespan.TotalMinutes
+                $Splat["Body"]["limit"] = [int]($Timespan.TotalMinutes / $Aggregate)
             }
         }
 
