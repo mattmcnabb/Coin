@@ -11,8 +11,8 @@ function Get-CoinPrice
     )
 
     $Body = @{
-        tsyms = $ToSymbols -join ','
-        fsyms  = $FromSymbols -join ','
+        tsyms = ConvertTo-Symbol -Symbols $ToSymbols
+        fsyms = ConvertTo-Symbol -Symbols $FromSymbols
     }
 
     $Raw = Invoke-CoinRestMethod -Api "min-api" -Endpoint "pricemultifull" -Body $Body | Select-Object -ExpandProperty Raw

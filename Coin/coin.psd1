@@ -16,7 +16,7 @@
             Tags = @("Crypto", "CryptoCurrency", "Currency", "Bitcoin","CryptoCompare","Ethereum","Ether","Litecoin")
             LicenseUri = "https://github.com/mattmcnabb/Coin/blob/master/LICENSE"
             ProjectUri = "https://github.com/mattmcnabb/Coin"
-            ReleaseNotes = "Very early draft version - supports listing coins, getting price by coin, and daily price history"
+            ReleaseNotes = "You can now specify coin symbols in any case, rather than just in upper-case"
         }
     }
 }

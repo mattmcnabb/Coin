@@ -36,8 +36,8 @@ function Get-CoinPriceHistory
         $Splat = @{
             Api = "min-api"
             Body = @{
-                tsym = $ToSymbol -join ','
-                fsym = $FromSymbol
+                tsym = ConvertTo-Symbol -Symbols $ToSymbol
+                fsym = ConvertTo-Symbol -Symbols $FromSymbol
                 toTs = ConvertTo-UnixTime -TimeStamp $Until
                 aggregate = $Aggregate
             }
