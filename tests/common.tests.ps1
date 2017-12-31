@@ -14,8 +14,8 @@ Describe "Manifest" {
     $SB = [scriptblock]::Create($Content)
     $ManifestHash = & $SB
 
-    It "has a valid nested module" {
-        $ManifestHash.NestedModules | Should Be "$ModuleName.psm1"
+    It "has a valid root module" {
+        $ManifestHash.RootModule | Should Be "$ModuleName.psm1"
     }
 
     It "has a valid Description" {

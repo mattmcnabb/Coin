@@ -1,6 +1,5 @@
-
-InModuleScope "Coin" {
-    Describe "ConvertTo-Symbol" {
+Describe "ConvertTo-Symbol" {
+    InModuleScope "Coin" {
         It "converts to upper-case" {
             ConvertTo-Symbol -Symbols "abc" | Should BeExactly "ABC"
         }

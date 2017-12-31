@@ -79,6 +79,7 @@ task TestManifest -depends Analyze -action {
 } -description "tests the validity of the module manifest"
 
 task Test -Depends TestManifest -action {
+    Import-Module $BuildModulePath -Force
     Invoke-Pester -Script $PSScriptRoot -EnableExit:$TestExit -PesterOption @{IncludeVSCodeMarker = $true}
 } -description "runs Pester tests"
 
