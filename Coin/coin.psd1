@@ -1,5 +1,5 @@
-﻿@{
-    NestedModules      = @("coin.psm1")
+@{
+    RootModule         = "coin.psm1"
     ModuleVersion      = "0.1.0.0"
     GUID               = "06d29747-e4a1-4115-a176-edda1e66a331"
     Author             = "Matt McNabb"
