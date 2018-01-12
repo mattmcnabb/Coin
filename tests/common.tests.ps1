@@ -49,3 +49,17 @@ Describe "Manifest" {
         }
     }
 }
+
+Describe "PSCore" {
+    $FolderName = (Get-Item ($BuildModulePath -replace '.$', '[$&]')).BaseName
+    $ManifestFileName = (Get-Item ($BuildManifestPath -replace '.$', '[$&]')).BaseName
+    $ModuleFileName = (Get-Item ($BuildPsm1Path -replace '.$', '[$&]')).BaseName
+    
+    It "manifest name matches folder name (case-sensitive)" { 
+        $FolderName | Should MatchExactly $ManifestFileName
+    }
+
+    It "module name matches folder name (case-sensitive)" {
+        $FolderName | Should MatchExactly $ModuleFileName
+    }
+}
