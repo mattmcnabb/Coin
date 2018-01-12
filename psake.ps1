@@ -16,6 +16,7 @@ properties {
     $ProjectHelpersPath = Join-Path $ProjectModulePath "helpers"
     $ProjectFunctionsPath = Join-Path $ProjectModulePath "functions"
     $ProjectDocsPath = Join-Path $PSScriptRoot "docs"
+    $ProjectTestsPath = Join-Path $PSScriptRoot "tests"
     $BuildTempPath = New-Item -Path $env:TEMP -ItemType Directory -Name "$ModuleName`_$((Get-Date).ToFileTime())"
     $BuildModulePath = New-Item -ItemType Directory -Path $BuildTempPath -Name $ModuleName
     $BuildPsm1Path = Join-Path $BuildModulePath "$ModuleName.psm1"
@@ -80,7 +81,7 @@ task TestManifest -depends Analyze -action {
 
 task Test -Depends TestManifest -action {
     Import-Module $BuildModulePath -Force
-    Invoke-Pester -Script $PSScriptRoot -EnableExit:$TestExit -PesterOption @{IncludeVSCodeMarker = $true}
+    Invoke-Pester -Script $ProjectTestsPath -EnableExit:$TestExit -PesterOption @{IncludeVSCodeMarker = $true}
 } -description "runs Pester tests"
 
 task Clean -depends Test -action {
