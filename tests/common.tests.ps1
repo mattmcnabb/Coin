@@ -51,11 +51,13 @@ Describe "Manifest" {
 }
 
 Describe "PSCore" {
-    $FolderName = (Get-Item ($BuildModulePath -replace '.$', '[$&]')).BaseName
-    $ManifestFileName = (Get-Item ($BuildManifestPath -replace '.$', '[$&]')).BaseName
-    $ModuleFileName = (Get-Item ($BuildPsm1Path -replace '.$', '[$&]')).BaseName
-    
-    It "manifest name matches folder name (case-sensitive)" { 
+    # test that the module folder and module file names match case
+    # this is important for cross-compatibility with Unix-like operating systems
+    $FolderName = Get-Item (Get-CanonicalPath $BuildModulePath) | Select -ExpandProperty BaseName
+    $ManifestFileName = Get-Item (Get-CanonicalPath $BuildManifestPath) | Select -ExpandProperty BaseName
+    $ModuleFileName = Get-Item (Get-CanonicalPath $BuildPsm1Path) | Select -ExpandProperty BaseName
+
+    It "manifest name matches folder name (case-sensitive)" {
         $FolderName | Should MatchExactly $ManifestFileName
     }
 
