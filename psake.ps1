@@ -36,7 +36,7 @@ task Compile -action {
         Write-Verbose -Message $Message -Verbose
     }
     
-    Get-ChildItem -Path $ProjectModulePath -Filter "*.ps?1" | Copy-Item -Destination $BuildModulePath -Recurse -Force
+    Get-ChildItem -Path $ProjectModulePath -file | Where Extension -match '^\.(psm1|psd1|ps1)$' | Copy-Item -Destination $BuildModulePath -Recurse -Force
     foreach ($Script in (Get-ChildItem -Path $ProjectHelpersPath, $ProjectFunctionsPath))
     {
         Get-Content -Path $Script.FullName | Out-File -FilePath $BuildPsm1Path -Append -Encoding utf8
